@@ -1,9 +1,11 @@
 ﻿
+using Inventarios.Api.Helpers;
 using Inventarios.Aplicacion.Comun;
 using Inventarios.Aplicacion.Stock.Comandos;
 using Inventarios.Aplicacion.Stock.Consultas;
 using Inventarios.Aplicacion.Stock.Dto;
 using MediatR;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventarios.Api.Controllers
@@ -15,10 +17,14 @@ namespace Inventarios.Api.Controllers
     [Route("api/[controller]")]
     [Consumes("application/json")]
     [Produces("application/json")]
+    [Authorize]
     public class InventariosController : ControllerBase
     {
         private readonly IMediator _mediator;
 
+        /// <summary>
+        /// constructor
+        /// </summary>
         public InventariosController(IMediator mediator) 
         {
             _mediator = mediator;
@@ -70,7 +76,14 @@ namespace Inventarios.Api.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), 500)]
         public async Task<IActionResult> Ingresar([FromBody] IngresarStock input)
         {
-            var output = await _mediator.Send(input);
+            var baseIn = new BaseIn
+            {
+                Token = HttpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", ""),
+                IdUsuario = HttpContext.Items["UserId"].ToString()
+            };
+            var inputBaseIn = input with { Control = baseIn };
+
+            var output = await _mediator.Send(inputBaseIn);
 
             if (output.Resultado != Resultado.Error)
             {
@@ -99,7 +112,14 @@ namespace Inventarios.Api.Controllers
         [ProducesResponseType(typeof(ValidationProblemDetails), 500)]
         public async Task<IActionResult> Retirar([FromBody] DisminuirStock input)
         {
-            var output = await _mediator.Send(input);
+            var baseIn = new BaseIn
+            {
+                Token = HttpContext.Request.Headers.Authorization.ToString().Replace("Bearer ", ""),
+                IdUsuario = HttpContext.Items["UserId"].ToString()
+            };
+            var inputBaseIn = input with { Control = baseIn };
+
+            var output = await _mediator.Send(inputBaseIn);
 
             if (output.Resultado != Resultado.Error)
             {
