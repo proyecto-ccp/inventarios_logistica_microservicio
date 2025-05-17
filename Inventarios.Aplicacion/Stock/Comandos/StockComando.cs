@@ -3,6 +3,8 @@ using MediatR;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using Inventarios.Aplicacion.Stock.Dto;
+using Inventarios.Aplicacion.Comun;
+using System.Text.Json.Serialization;
 
 namespace Inventarios.Aplicacion.Stock.Comandos
 {
@@ -12,8 +14,10 @@ namespace Inventarios.Aplicacion.Stock.Comandos
         [Required(ErrorMessage = "El campo IdProducto es obligatorio")]
         int IdProducto,
         [Required(ErrorMessage = "El campo CantidadStock es obligatorio")]
-        int CantidadStock
-        
+        int CantidadStock,
+        [property: JsonIgnore]
+        BaseIn Control
+
         ) : IRequest<InventarioOut>;
 
     [ExcludeFromCodeCoverage]
@@ -22,7 +26,9 @@ namespace Inventarios.Aplicacion.Stock.Comandos
         [Required(ErrorMessage = "El campo IdProducto es obligatorio")]
         int IdProducto,
         [Required(ErrorMessage = "El campo CantidadStock es obligatorio")]
-        int CantidadStock
+        int CantidadStock,
+        [property: JsonIgnore]
+        BaseIn Control
 
     ) : IRequest<InventarioOut>;
 

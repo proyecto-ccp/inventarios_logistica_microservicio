@@ -1,5 +1,8 @@
+using Inventarios.Api.Middleware;
+using Inventarios.Dominio.Puertos.Integraciones;
 using Inventarios.Dominio.Puertos.Repositorios;
 using Inventarios.Dominio.Servicios.Stock;
+using Inventarios.Infraestructura.Adaptadores.Integraciones;
 using Inventarios.Infraestructura.Adaptadores.RepositorioGenerico;
 using Inventarios.Infraestructura.Adaptadores.Repositorios;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +28,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version = "V.1.0.1",
+        Version = "V.2.0.1",
         Title = "Servicio Inventarios",
         Description = "Administración del stock de productos"
     });
@@ -63,6 +66,8 @@ builder.Services.AddDbContext<InventariosDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("InventariosDbContext")), ServiceLifetime.Transient);
 builder.Services.AddTransient(typeof(IRepositorioBase<>), typeof(RepositorioBase<>));
 builder.Services.AddTransient<IInventarioRepositorio, InventarioRepositorio>();
+builder.Services.AddHttpClient<IServicioUsuariosApi, ServicioUsuariosApi>();
+builder.Services.AddHttpClient<IServicioAuditoriaApi, ServicioAuditoriaApi>();
 //Capa Dominio - Servicios
 builder.Services.AddTransient<Ingresar>();
 builder.Services.AddTransient<Retirar>();
@@ -75,6 +80,7 @@ app.UseSwaggerUI();
 app.UseCors("AllowAllOrigins");
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseMiddleware<AutorizadorMiddleware>();
 app.MapControllers();
 
 await app.RunAsync();

@@ -3,9 +3,12 @@ using AutoMapper;
 using Inventarios.Aplicacion.Comun;
 using Inventarios.Aplicacion.Stock.Dto;
 using Inventarios.Dominio.Entidades;
+using Inventarios.Dominio.ObjetoValor;
+using Inventarios.Dominio.Puertos.Integraciones;
 using Inventarios.Dominio.Servicios.Stock;
 using MediatR;
 using System.Net;
+using System.Text.Json;
 
 namespace Inventarios.Aplicacion.Stock.Comandos
 {
@@ -13,11 +16,13 @@ namespace Inventarios.Aplicacion.Stock.Comandos
     {
         private readonly IMapper _mapper;
         private readonly Retirar _servicio;
+        private readonly IServicioAuditoriaApi _servicioAuditoriaApi;
 
-        public DisminuirStockHandler(IMapper mapper, Retirar servicio)
+        public DisminuirStockHandler(IMapper mapper, Retirar servicio, IServicioAuditoriaApi servicioAuditoriaApi)
         {
             _mapper = mapper;
             _servicio = servicio;
+            _servicioAuditoriaApi = servicioAuditoriaApi;
         }
         public async Task<InventarioOut> Handle(DisminuirStock request, CancellationToken cancellationToken)
         {
@@ -30,6 +35,11 @@ namespace Inventarios.Aplicacion.Stock.Comandos
                 output.Resultado = Resultado.Exitoso;
                 output.Mensaje = "El stock del producto disminuyo correctamente";
                 output.Status = HttpStatusCode.OK;
+
+                var inputAuditoria = _mapper.Map<Auditoria>(request);
+                inputAuditoria.IdRegistro = output.Inventario.Id.ToString();
+                inputAuditoria.Registro = JsonSerializer.Serialize(output.Inventario);
+                _ = Task.Run(() => _servicioAuditoriaApi.RegistrarAuditoria(inputAuditoria), cancellationToken);
             }
             catch (Exception ex)
             {
