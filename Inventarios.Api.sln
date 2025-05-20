@@ -10,6 +10,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventarios.Infraestructura
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventarios.Aplicacion", "Inventarios.Aplicacion\Inventarios.Aplicacion.csproj", "{F2452579-9644-4825-AD5C-0E6C07FC1F71}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventarios.Tests", "Inventarios.Tests\Inventarios.Tests.csproj", "{79A3F0F7-E082-4051-9325-109410C640BC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +36,16 @@ Global
 		{F2452579-9644-4825-AD5C-0E6C07FC1F71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2452579-9644-4825-AD5C-0E6C07FC1F71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2452579-9644-4825-AD5C-0E6C07FC1F71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79A3F0F7-E082-4051-9325-109410C640BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79A3F0F7-E082-4051-9325-109410C640BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79A3F0F7-E082-4051-9325-109410C640BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79A3F0F7-E082-4051-9325-109410C640BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{79A3F0F7-E082-4051-9325-109410C640BC} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AD525DC4-2DFF-4C2A-B209-CFD97F4CD04C}

@@ -5,7 +5,6 @@ using Inventarios.Aplicacion.Stock.Comandos;
 using Inventarios.Aplicacion.Stock.Consultas;
 using Inventarios.Aplicacion.Stock.Dto;
 using MediatR;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventarios.Api.Controllers
